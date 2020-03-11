@@ -5,8 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    paddingHorizontal: 30,
-    backgroundColor: theme.colors.white,
+    marginHorizontal: 30,
   },
   inputContainer: {
     flex: 1,

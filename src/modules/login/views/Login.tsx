@@ -1,7 +1,14 @@
 import _ from 'lodash';
 import React, {useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Button} from 'react-native-elements';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {TextInput} from '../../../lib/TextInput/TextInput';
 import {IUserAllowedToLogin} from '../../../models';
 import {styles} from './styles/LeginStyles';
@@ -53,60 +60,65 @@ export const Login: React.FC<IObjectProps & IActionProps> = props => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          iconName="ios-person"
-          iconType="ionicon"
-          placeHolder="Username"
-          onFocus={() => setFormErrors([])}
-          value={userInput.userName}
-          errorMessage={
-            formErrors.find(error => error === FormErrors.username) &&
-            'Invalid username'
-          }
-          onChangeText={text => {
-            setFormErrors([]);
-            setUserInput({userName: text, password: userInput.password});
-          }}
-        />
-        <TextInput
-          iconName="ios-person"
-          iconType="ionicon"
-          placeHolder="Password"
-          onFocus={() => setFormErrors([])}
-          secureTextEntry={true}
-          errorMessage={
-            formErrors.find(error => error === FormErrors.password) &&
-            'Invalid password'
-          }
-          value={userInput.password}
-          onChangeText={text => {
-            setFormErrors([]);
-            setUserInput({userName: userInput.userName, password: text});
-          }}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          titleStyle={styles.loginButtonTitle}
-          buttonStyle={styles.loginButton}
-          containerStyle={styles.loginButtonContainer}
-          title="LOGIN"
-          onPress={() => {
-            setFormErrors([]);
-            handleSubmit();
-          }}
-        />
-        <View style={styles.registerContainer}>
-          <Text style={styles.registerText}>Not a member yet?</Text>
-          <TouchableOpacity
-            hitSlop={{top: 10, right: 10, bottom: 10, left: 10}}
-            onPress={props.onRegisterPress}>
-            <Text style={styles.registerButton}>Register</Text>
-          </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        enabled={true}
+        behavior={Platform.OS === 'android' ? 'height' : 'padding'}
+        style={{flex: 1}}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            iconName="ios-person"
+            iconType="ionicon"
+            placeHolder="Username"
+            onFocus={() => setFormErrors([])}
+            value={userInput.userName}
+            errorMessage={
+              formErrors.find(error => error === FormErrors.username) &&
+              'Invalid username'
+            }
+            onChangeText={text => {
+              setFormErrors([]);
+              setUserInput({userName: text, password: userInput.password});
+            }}
+          />
+          <TextInput
+            iconName="ios-lock"
+            iconType="ionicon"
+            placeHolder="Password"
+            onFocus={() => setFormErrors([])}
+            secureTextEntry={true}
+            errorMessage={
+              formErrors.find(error => error === FormErrors.password) &&
+              'Invalid password'
+            }
+            value={userInput.password}
+            onChangeText={text => {
+              setFormErrors([]);
+              setUserInput({userName: userInput.userName, password: text});
+            }}
+          />
         </View>
-      </View>
-    </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            titleStyle={styles.loginButtonTitle}
+            buttonStyle={styles.loginButton}
+            containerStyle={styles.loginButtonContainer}
+            title="LOGIN"
+            onPress={() => {
+              setFormErrors([]);
+              handleSubmit();
+            }}
+          />
+          <View style={styles.registerContainer}>
+            <Text style={styles.registerText}>Not a member yet?</Text>
+            <TouchableOpacity
+              hitSlop={{top: 10, right: 10, bottom: 10, left: 10}}
+              onPress={props.onRegisterPress}>
+              <Text style={styles.registerButton}>Register</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
